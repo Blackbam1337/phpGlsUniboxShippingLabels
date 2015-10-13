@@ -137,7 +137,7 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		}
 		try {
 			// Erstelle ein neues Grafikobjekt
-			$imageFile = Config::$path.'/images/Logo_GLS.jpg';
+			$imageFile = SERVER_BASE.'/images/Logo_GLS.jpg';
 			$stampImage = Zend_Pdf_Image::imageWithPath($imageFile);
 		} catch (Zend_Pdf_Exception $e) {
 			// Beispiel wie man mit Ladefehlern bei Grafiken umgeht.
@@ -145,9 +145,9 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		}
 		if ($stampImage != null) {
 			$this->page->drawImage($stampImage, 
-									$this->coordX(3) , 
-									$this->coordY(0) - $this->mmToPts(149), 
-									$this->coordX($this->mmToPts(99)) , 
+									$this->coordX(180) ,
+									$this->coordY(0) - $this->mmToPts(149),
+									$this->coordX($this->mmToPts(99)) , // 99 original
 									$this->coordY($this->mmToPts(150)) + $this->mmToPts(14)
 								);
 		}
@@ -177,7 +177,7 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		$fontItem = $object->getItem();
 
 		if($fontItem->getFace() == 'bold') { $fontDecoration = 'bold'; } else { $fontDecoration = 'regular'; }	
-		$fontPath = Config::$path.'/fonts/'.$fontItem->getName().'.ttf';
+		$fontPath = SERVER_BASE.'/fonts/'.$fontItem->getName().'.ttf';
 		if ( is_file( $fontPath ) ) { $font = Zend_Pdf_Font::fontWithPath($fontPath,Zend_Pdf_Font::EMBED_SUPPRESS_EMBED_EXCEPTION); } else { if($fontDecoration == "bold") {$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA_BOLD);}else{$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);} }
         
 

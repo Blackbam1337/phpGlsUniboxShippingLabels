@@ -12,6 +12,8 @@ $errors = array();
 global $output_json;
 $output_json = "";
 
+define('SERVER_BASE',dirname(__FILE__));
+
 require('bootstrap.php');
 
 require('controller/controller.php');
