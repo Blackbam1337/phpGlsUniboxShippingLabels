@@ -1,0 +1,18 @@
+Parameters (* required):
+
+tags_format *
+
+tags *
+
+package[label] *
+
+package[number] *
+
+pdf[beginx]
+
+pdf[beginy]
+
+pdf[format]
+
+pdf[prefix]
+

@@ -1,0 +1,152 @@
+/* Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+/* Main */
+body {
+    background-color:#eee;
+    font-family:'Open Sans',sans-serif;
+    color:#333;
+}
+
+header {
+    background-color:#fefefe;
+    height:40px;
+    border-bottom:1px solid #ccc;
+    padding:5px 20px;
+}
+
+main {
+    padding: 5px 20px;
+}
+
+#logo, #title {
+    float:left;
+}
+
+#title {
+    padding-left:25px;
+    font-size:40px;
+    color:#ccc;
+    line-height:40px;
+    font-weight:700;
+}
+
+.mpt {
+    float:left;
+    width:50%;
+    min-width:280px;
+    max-width:500px;
+    box-sizing:border-box;
+    padding-right:20px;
+}
+
+.mpt h1 {
+    padding-top:20px;
+    font-size:24px;
+    font-weight:700;
+    padding-bottom:10px;
+}
+
+table tr td, table tr th {
+    padding:5px;
+}
+
+table tr th {
+    font-weight:700;
+    text-align:left;
+}
+
+h2 {
+    font-size:18px;
+    padding:15px 0 7.5px;
+    font-weight:700;
+    color:#33b;
+}
+
+footer {
+    border-top:1px solid #ccc;
+    padding:5px 20px;
+    background-color:#fefefe;
+    bottom:0;
+    position:fixed;
+    font-size:10px;
+    width:100%;
+}
+
+p {
+    margin-bottom:15px;
+}
+
+footer a {
+    color:#333;
+}
+
+textarea {
+    width:100%;
+    height:80px;
+}
+
+.error {
+    padding:3px 10px;
+    color:#911;
+    background-color:#fee;
+    border:1px solid #911;
+    margin:10px 0;
+}
+
+#data {
+    height:500px;
+}
