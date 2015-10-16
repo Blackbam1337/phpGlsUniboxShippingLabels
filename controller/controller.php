@@ -52,6 +52,8 @@ $klein->respond('POST', '/create_from_interface/', function ($request, $response
     $prepare["pdf"]["format"] = $_POST["pdf_papersize"];
     $prepare["pdf"]["prefix"] = $_POST["pdf_filename_prefix"];
 
+    $prepare["mode"] = $_POST["mode"];
+
     $encoded = json_encode($prepare);
 
 

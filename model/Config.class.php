@@ -11,4 +11,5 @@ class Config {
     public static $glsbox_label_beginy = 0;
     public static $glsbox_label_papersize = 'A4';
     public static $filename_prefix = "";
+    public static $mode;
 }

@@ -40,6 +40,16 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td>Mode</td>
+                            <td>
+                                <select name="mode" id="mode">
+                                    <option <?php echo ($_POST['mode']=="business") ? 'selected':''; ?> value="business">Business Versand</option>
+                                    <option <?php echo ($_POST['mode']=="express") ? 'selected':''; ?> value="express">Express Versand</option>
+                                </select>
+                            </td>
+                            <td>DIN paper size</td>
+                        </tr>
+                        <tr>
                             <td>Package Label ID *</td>
                             <td><input type="text" name="package_label" id="package_label" value="<?php echo $_POST['package_label']; ?>" /></td>
                             <td></td>

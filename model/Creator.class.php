@@ -38,9 +38,20 @@ class Creator {
 
                 Config::$filename_prefix = resempty($decoded,array('pdf','prefix'),"",Primitive::STR);
 
+                $mode = resempty($decoded,'mode','business',Primitive::STR);
 
-                // @TODO: Express
-                $glsService = new Gls_Unibox_Model_Label_Gls_Business();
+                if(in_array($mode,array('business','express'))) {
+                    Config::$mode = $mode;
+                }
+
+
+                $glsService = null;
+                if(Config::$mode=="express") {
+                    $glsService = new Gls_Unibox_Model_Label_Gls_Express();
+                } else {
+                    $glsService = new Gls_Unibox_Model_Label_Gls_Business();
+                }
+
                 $glsService->importValues($tags);
                 $ready_tags = $glsService->getData();
 

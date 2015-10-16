@@ -182,7 +182,7 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
         
 
 		if ($fontItem->getFace() == "invert") {
-			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwatze farbe setzen fuer Hintergrund
+			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwarze farbe setzen fuer Hintergrund
 			$width = $this->widthForStringUsingFontSize($object->getValue(), $font, $fontItem->getSize());
 			$height = $fontItem->getSize();
 			$this->page->drawRectangle($this->coordX($this->mmToPts($object->getPosx())), $this->coordY($this->mmToPts($object->getPosy())) + $height/2, $this->coordX($this->mmToPts($object->getPosx())) + $width, $this->coordY($this->mmToPts($object->getPosy())) - $height/2, Zend_Pdf_Page::SHAPE_DRAW_FILL);
