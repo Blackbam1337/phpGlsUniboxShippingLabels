@@ -43,45 +43,45 @@
                             <td>Mode</td>
                             <td>
                                 <select name="mode" id="mode">
-                                    <option <?php echo ($_POST['mode']=="business") ? 'selected':''; ?> value="business">Business Versand</option>
-                                    <option <?php echo ($_POST['mode']=="express") ? 'selected':''; ?> value="express">Express Versand</option>
+                                    <option <?php echo (resempty($_POST,'mode')=="business") ? 'selected':''; ?> value="business">Business Versand</option>
+                                    <option <?php echo (resempty($_POST,'mode')=="express") ? 'selected':''; ?> value="express">Express Versand</option>
                                 </select>
                             </td>
                             <td>DIN paper size</td>
                         </tr>
                         <tr>
                             <td>Package Label ID *</td>
-                            <td><input type="text" name="package_label" id="package_label" value="<?php echo $_POST['package_label']; ?>" /></td>
+                            <td><input type="text" name="package_label" id="package_label" value="<?php echo resempty($_POST,'package_label'); ?>" /></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>Package Number *</td>
-                            <td><input type="text" name="package_number" id="package_number" value="<?php echo $_POST['package_number']; ?>" /></td>
+                            <td><input type="text" name="package_number" id="package_number" value="<?php echo resempty($_POST,'package_number'); ?>" /></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>Label: Begin X</td>
-                            <td><input type="text" name="pdf_beginx" id="pdf_beginx" value="<?php echo $_POST['pdf_beginx']; ?>" /></td>
+                            <td><input type="text" name="pdf_beginx" id="pdf_beginx" value="<?php echo resempty($_POST,'pdf_beginx'); ?>" /></td>
                             <td>A number.</td>
                         </tr>
                         <tr>
                             <td>Label: Begin Y</td>
-                            <td><input type="text" name="pdf_beginy" id="pdf_beginy" value="<?php echo $_POST['pdf_beginy']; ?>" /></td>
+                            <td><input type="text" name="pdf_beginy" id="pdf_beginy" value="<?php echo resempty($_POST,'pdf_beginy'); ?>" /></td>
                             <td>A number.</td>
                         </tr>
                         <tr>
                             <td>Paper Size</td>
                             <td>
                                 <select name="pdf_papersize" id="pdf_papersize">
-                                    <option <?php echo ($_POST['pdf_papersize']=="A4") ? 'selected':''; ?> value="A4">A4</option>
-                                    <option <?php echo ($_POST['pdf_papersize']=="A5") ? 'selected':''; ?> value="A5">A5</option>
+                                    <option <?php echo (resempty($_POST,'pdf_papersize')=="A4") ? 'selected':''; ?> value="A4">A4</option>
+                                    <option <?php echo (resempty($_POST,'pdf_papersize')=="A5") ? 'selected':''; ?> value="A5">A5</option>
                                 </select>
                             </td>
                             <td>DIN paper size</td>
                         </tr>
                         <tr>
                             <td>Filename Prefix</td>
-                            <td><input type="text" name="pdf_filename_prefix" id="pdf_filename_prefix" value="<?php echo $_POST['pdf_beginy']; ?>" /></td>
+                            <td><input type="text" name="pdf_filename_prefix" id="pdf_filename_prefix" value="<?php echo resempty($_POST,'pdf_beginy'); ?>" /></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -94,19 +94,19 @@
                 <p>Input Type *</p>
                 <p>
                     <select name="tags_format" id="tags_format">
-                        <option value="string" <?php echo ($_POST['tags_format']=="string") ? 'selected':''; ?>>GLS prepared Tag String</option>
-                        <option value="comma" <?php echo ($_POST['tags_format']=="comma") ? 'selected':''; ?>>GLS Tags by Tag ID:Value</option>
-                        <option value="json" <?php echo ($_POST['tags_format']=="json") ? 'selected':''; ?>>GLS Tags as ready JSON</option>
+                        <option value="string" <?php echo (resempty($_POST,'tags_format')=="string") ? 'selected':''; ?>>GLS prepared Tag String</option>
+                        <option value="comma" <?php echo (resempty($_POST,'tags_format')=="comma") ? 'selected':''; ?>>GLS Tags by Tag ID:Value</option>
+                        <option value="json" <?php echo (resempty($_POST,'tags_format')=="json") ? 'selected':''; ?>>GLS Tags as ready JSON</option>
                     </select>
                 </p>
                 <p>
                     Tag Input *
                 </p>
                 <p>
-                    <textarea name="gls_input" id="gls_input"><?php echo $_POST['gls_input']; ?></textarea>
+                    <textarea name="gls_input" id="gls_input"><?php echo resempty($_POST,'gls_input'); ?></textarea>
                 </p>
                 <p>
-                    <input type="checkbox" name="create_json_only" value="1" <?php echo ($_POST['create_json_only']=="1") ? 'checked':''; ?> /> Create JSON (PDF otherwise)
+                    <input type="checkbox" name="create_json_only" value="1" <?php echo (resempty($_POST,'create_json_only')=="1") ? 'checked':''; ?> /> Create JSON (PDF otherwise)
                 </p>
 
                <p><input type="submit" value="Create" /></p>
@@ -115,7 +115,7 @@
 
         <div id="create_from_json" class="mpt">
             <?php
-            $json = $_POST['data'];
+            $json = resempty($_POST,'data');
 
             if($json=="") {
                 global $output_json;
