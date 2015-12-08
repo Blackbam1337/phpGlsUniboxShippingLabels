@@ -15,6 +15,22 @@ $klein->respond('GET', '/', function ($request, $response, $service, $app) {
 });
 
 
+$klein->respond('POST', '/create_from_jsonpost/', function ($request, $response, $service, $app) {
+
+    $c = new Creator();
+    $c->createFromJson(file_get_contents('php://input'));
+
+    global $errors;
+    $errors = array_merge_recursive($errors,$c->getErrors());
+
+    if(empty($errors)) {
+        $c->flush();
+    } else {
+        return json_encode($errors);
+    }
+});
+
+
 $klein->respond('POST', '/create/', function ($request, $response, $service, $app) {
 
     $c = new Creator();

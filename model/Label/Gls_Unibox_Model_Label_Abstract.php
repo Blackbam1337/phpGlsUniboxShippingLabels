@@ -41,13 +41,13 @@ abstract class Gls_Unibox_Model_Label_Abstract
 						if(array_key_exists($item->getTag(),$values)) { $item->setValue($values[$item->getTag()]); }
 					}
 		$this->nationalDeliveryInformation($values['100'],false);
-		$this->bereinigeWennExpressversand($values['750']);
+		@$this->bereinigeWennExpressversand($values['750']);
 		} 
 	}
 	
 
 	protected function bereinigeWennExpressversand($code) { 
-	if ($code != null) { $edit = $this->data->getItemsByColumnValue('tag', '100'); $edit[0]->setValue(null); } //lösche T100 der oberen rechten Ecke weil stattdessen T105 gedruckt werden muss
+		if ($code != null) { $edit = $this->data->getItemsByColumnValue('tag', '100'); $edit[0]->setValue(null); } //lösche T100 der oberen rechten Ecke weil stattdessen T105 gedruckt werden muss
 	}
 	
 	protected function nationalDeliveryInformation($countryCode,$before) {
