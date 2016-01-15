@@ -5,7 +5,7 @@
  * Date: 10/9/15
  * Time: 6:20 PM
  */
-class Error {
+class GCError {
 
     public $message;
 

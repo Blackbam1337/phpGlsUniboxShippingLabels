@@ -56,6 +56,7 @@ $klein->respond('POST', '/create_from_interface/', function ($request, $response
 
     $prepare["tags"] = $_POST["gls_input"];
 
+
     $prepare["package"] = array();
 
     $prepare["package"]["label"] = $_POST["package_label"];
@@ -99,7 +100,7 @@ $klein->respond('POST', '/create_from_interface/', function ($request, $response
 
 
 $klein->respond('POST', '/[*]', function ($request, $response, $service, $app) {
-    return json_encode(new Error("Error: Invalid call."));
+    return json_encode(new GCError("Error: Invalid call."));
 });
 
 

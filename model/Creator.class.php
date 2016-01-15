@@ -61,11 +61,11 @@ class Creator {
 
                 return true;
             } else {
-                array_push($this->errors,new Error("Error: Validation of input parameters did not succeed."));
+                array_push($this->errors,new GCError("Error: Validation of input parameters did not succeed."));
             }
 
         } else {
-            array_push($this->errors,new Error("Error: Decoding of the JSON-Input failed - invalid JSON."));
+            array_push($this->errors,new GCError("Error: Decoding of the JSON-Input failed - invalid JSON."));
         }
         return false;
     }
@@ -106,22 +106,22 @@ class Creator {
     protected function validateJson($json) {
 
         if(!in_array($json->tags_format,array("string","comma","json"))) {
-            array_push($this->errors,new Error("Error: Unknown tags format."));
+            array_push($this->errors,new GCError("Error: Unknown tags format."));
             return false;
         }
 
         if(!isset($json->tags) || $json->tags=="") {
-            array_push($this->errors,new Error("Error: Tags missing."));
+            array_push($this->errors,new GCError("Error: Tags missing."));
             return false;
         }
 
         if(!isset($json->package->label) || $json->package->label=="") {
-            array_push($this->errors,new Error("Error: Package Label is required."));
+            array_push($this->errors,new GCError("Error: Package Label is required."));
             return false;
         }
 
         if(!isset($json->package->number) || $json->package->number=="") {
-            array_push($this->errors,new Error("Error: Package Number is required."));
+            array_push($this->errors,new GCError("Error: Package Number is required."));
             return false;
         }
 
@@ -139,7 +139,7 @@ class Creator {
         if(preg_match($re, $returnedtag)) {
             $returnedtag = preg_replace($re, "$1", $returnedtag);
         } else {
-            array_push($this->errors,new Error('Fehler: Kein gültiger GLS Stream'));
+            array_push($this->errors,new GCError('Fehler: Kein gültiger GLS Stream'));
             return false;
         }
 
@@ -154,7 +154,7 @@ class Creator {
                     $glsTags[$tmp[0]] = $tmp[1] ;
                 }
             }elseif (stripos($item,'RESULT') === 0 && stripos($item,'E000') === false ) {
-                array_push($this->errors,new Error('Fehler - Rückgabewert der Unibox : '.$item));
+                array_push($this->errors,new GCError('Fehler - Rückgabewert der Unibox : '.$item));
                 return false;
             }
             $tmp = null;
