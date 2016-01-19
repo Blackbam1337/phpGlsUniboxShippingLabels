@@ -26,6 +26,7 @@ class Gls_Unibox_Model_Pdf_Label extends Gls_Unibox_Model_Pdf_Abstract{
 		//Models Label/Gls/Express oder Label/Gls/Business holen für Daten
 		foreach($tagdata as $item) {
 			if ($item->getValue() != null) {
+
 				if(get_class($item->getItem()) === 'Gls_Unibox_Model_Label_Item_Font'  ){
 					$this->drawFont($item);
 				}
@@ -37,6 +38,7 @@ class Gls_Unibox_Model_Pdf_Label extends Gls_Unibox_Model_Pdf_Abstract{
 				}
 			}
 		}
+
 		return $this->pdf;
 	}
 
@@ -57,4 +59,5 @@ class Gls_Unibox_Model_Pdf_Label extends Gls_Unibox_Model_Pdf_Abstract{
 			}
 		}
     }
+
 }

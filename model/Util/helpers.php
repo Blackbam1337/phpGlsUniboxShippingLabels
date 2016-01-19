@@ -55,9 +55,11 @@ function resempty(&$var,$key,$empty="",$primitive=-1) {
             for($i=0;$i<$dimensions;$i++) {
                 if(property_exists($tpclass,$key[$i])) {
                     if($i === $dimensions-1) {
-                        return $tcast($tpclass->$key[$i],$primitive);
+                        $tp = $key[$i];
+                        return $tcast($tpclass->$tp,$primitive);
                     } else {
-                        $tpclass = $tpclass->$key[$i];
+                        $tp = $key[$i];
+                        $tpclass = $tpclass->$tp;
                     }
                 } else {
                     return $tcast($empty,$primitive);
