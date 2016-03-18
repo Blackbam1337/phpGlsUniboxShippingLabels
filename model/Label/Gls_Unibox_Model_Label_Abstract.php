@@ -34,12 +34,13 @@ abstract class Gls_Unibox_Model_Label_Abstract
 	}
 	
 	public function importValues($values){
+
 		if(is_Array($values)){
-		$this->nationalDeliveryInformation($values['100'],true);
-				$items = $this->data;
-					foreach($items as $item) {
-						if(array_key_exists($item->getTag(),$values)) { $item->setValue($values[$item->getTag()]); }
-					}
+			$this->nationalDeliveryInformation($values['100'],true);
+			$items = $this->data;
+			foreach($items as $item) {
+				if(array_key_exists($item->getTag(),$values)) { $item->setValue($values[$item->getTag()]); }
+			}
 		$this->nationalDeliveryInformation($values['100'],false);
 		@$this->bereinigeWennExpressversand($values['750']);
 		} 

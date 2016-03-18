@@ -238,8 +238,9 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 	  	$y        = 214/2;  // barcode center
 	  	$height   = 40;   // barcode height in 1D ; module size in 2D
 	  	$width    = 40;    // barcode height in 1D ; not use in 2D
-	  
-	  	$code	 = str_replace("?", "|", $object->getValue());
+
+		// datamatrix creator expects iso 8859-1 code
+	  	$code	 = str_replace("?", "|", $this->utf8ToIso88591($object->getValue()));
 	  	$type     = 'datamatrix';
 
 	  	$im     = imagecreatetruecolor(214, 214);
@@ -282,5 +283,12 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
      	$widths = $font->widthsForGlyphs($glyphs);
      	$stringWidth = (array_sum($widths) / $font->getUnitsPerEm()) * $fontSize;
      	return $stringWidth;
+	}
+
+
+	protected function utf8ToIso88591($utf8) {
+		$iso88591_1 = utf8_decode($utf8);
+		$iso88591_2 = iconv('UTF-8', 'ISO-8859-1', $utf8);
+		return mb_convert_encoding($utf8, 'ISO-8859-1', 'UTF-8');
 	}
 }
