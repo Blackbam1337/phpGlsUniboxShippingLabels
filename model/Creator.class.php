@@ -144,10 +144,10 @@ class Creator {
         }
 
         //Sonderzeichen der Datamatrix2 umwandeln in + für die Speicherung in der Datenbank
-        $returnedtag = str_replace("¬", "+",$returnedtag);
         $returnedtag = explode('|',$returnedtag);
         $glsTags = array();
         foreach ($returnedtag as $item) {
+            $item = str_replace("¬", "|",$item);
             if (stripos($item,'T') === 0) {
                 $tmp = explode(':',$item,2); $tmp[0] = str_ireplace('T','',$tmp[0]);
                 if($tmp[1] != ''){
