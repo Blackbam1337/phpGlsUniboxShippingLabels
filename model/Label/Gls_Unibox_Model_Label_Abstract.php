@@ -139,7 +139,7 @@ abstract class Gls_Unibox_Model_Label_Abstract
 
 		//bar & Qrcodes
 		$item = new Varien_Object(); $item->setTag('8902')->setValue(null)->setPosx(4.5)->setPosy(31.5)->setItem( (new Gls_Unibox_Model_Label_Item_Datamatrix ())->setBorder(true)->setDimension(20) ); $this->data->addItem($item); $item = null;
-		$item = new Varien_Object(); $item->setTag('8916')->setValue(null)->setPosx(30.5)->setPosy(30)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code25interleaved')->setHeight(20)->setBarThickWidth(2)->setBarThinWidth(1)->setFactor(2.2) ); $this->data->addItem($item); $item = null;
+		$item = new Varien_Object(); $item->setTag('8916')->setValue(null)->setPosx(30.5)->setPosy(32)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code25interleaved')->setHeight(18)->setWidth(40)->setBarThickWidth(2)->setBarThinWidth(1)->setFactor(2.2) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('8903')->setValue(null)->setPosx(75)->setPosy(31)->setItem( (new Gls_Unibox_Model_Label_Item_Datamatrix ())->setDimension(22) ); $this->data->addItem($item); $item = null; //Qrcode
 
 		$item = new Varien_Object(); $item->setTag('8916')->setValue(null)->setPosx(42)->setPosy(52.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(8) ); $this->data->addItem($item); $item = null;	//Freitext unter dem Barcode

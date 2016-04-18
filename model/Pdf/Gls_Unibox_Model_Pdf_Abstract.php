@@ -200,19 +200,10 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		if ($fontItem->getRotation() !== null) { $this->page->rotate($this->coordX($this->mmToPts($object->getPosx())), $this->coordY($this->mmToPts($object->getPosy())), -deg2rad(360-$fontItem->getRotation())); }
 	}
 
-    protected function drawBarcode($object){
-	
+	private function drawBarcodeCode128($object) {
 		$barcodeItem = $object->getItem();
-		//Mage::Log($barcodeItem->getType());
-		switch ($barcodeItem->getType()){
-			case 'Code25interleaved': $barcode = new Zend_Barcode_Object_Code25interleaved(); break;
-			case 'Code128': $barcode = new Zend_Barcode_Object_Code128(); break;
-			
-			default: $barcode = new Zend_Barcode_Object_Code25interleaved(); break;
-		}
-		$barcodeValue = $object->getValue();
-		if ($barcodeItem->getType() == "Code128") {$barcodeValue = str_replace('.','',$object->getValue());} //Punkte entfernen bei Schweizer Barcode
-
+	    $barcode = new Zend_Barcode_Object_Code128();
+		$barcodeValue = str_replace('.','',$object->getValue()); //Punkte entfernen bei Schweizer Barcode
 		$barcode
 			->setText($barcodeValue)
 			->setDrawText(false)
@@ -221,12 +212,57 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 			->setFactor($barcodeItem->getFactor())
 			->setBarHeight($this->mmToPts($barcodeItem->getHeight()))
 			->setWithQuietZones(true);
-			
 
 		$renderer = new Zend_Barcode_Renderer_Pdf();
-		$renderer->setBarcode($barcode)->setResource($this->pdf)->setLeftOffset($this->coordX($this->mmToPts($object->getPosx())))->setTopOffset($this->mmToPts($object->getPosy()) + $this->_startpunkt['y'] );	
-			
+		$renderer->setBarcode($barcode)->setResource($this->pdf)->setLeftOffset($this->coordX($this->mmToPts($object->getPosx())))->setTopOffset($this->mmToPts($object->getPosy()) + $this->_startpunkt['y'] );
+
 		$renderer->draw();
+	}
+
+    protected function drawBarcode($object){
+	
+		$barcodeItem = $object->getItem();
+		//Mage::Log($barcodeItem->getType());
+		if ($barcodeItem->getType() == 'Code128') {
+			return $this->drawBarcodeCode128($object);
+		}
+			
+		$barcode = new Zend_Barcode_Object_Code25interleaved();
+		$barcodeValue = $object->getValue();
+
+		$barcode
+			->setText($barcodeValue)
+			->setDrawText(false)
+			->setBarThinWidth($barcodeItem->getBarThinWidth() * 10)
+			->setBarThickWidth($barcodeItem->getBarThickWidth() * 10)
+			->setBarHeight(100)
+			->setWithQuietZones(true);
+			
+
+		$renderer = new Zend_Barcode_Renderer_Image();
+		$renderer->setBarcode($barcode);
+
+		// TODO merge with ob_start from matrix barcode below
+		ob_start();
+		$renderer->render();
+		$imagestring = ob_get_contents();
+		ob_end_clean();
+		$temp = tempnam(sys_get_temp_dir(),'DMX');//tmpfile();
+		$handle = fopen($temp,'w+b');
+		fwrite($handle, $imagestring);
+		fseek($handle,0);
+
+		$image = new Zend_Pdf_Resource_Image_Png($temp);
+		fclose($handle);
+
+		$this->page->drawImage($image,
+			$this->coordX($this->mmToPts($object->getPosx())) ,
+			$this->coordY($this->mmToPts($object->getPosy() + $barcodeItem->getHeight())),
+			$this->coordX($this->mmToPts($object->getPosx() + $barcodeItem->getWidth())),
+			$this->coordY($this->mmToPts($object->getPosy()))
+
+		);
+		
 	}
 
 
@@ -234,19 +270,17 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 
 		$matrixItem = $object->getItem();
 
-	  	$x        = 214/2;  // barcode center
-	  	$y        = 214/2;  // barcode center
-	  	$height   = 40;   // barcode height in 1D ; module size in 2D
-	  	$width    = 40;    // barcode height in 1D ; not use in 2D
+	  	$x        = 2140/2;  // barcode center
+	  	$y        = 2140/2;  // barcode center
 
 		// datamatrix creator expects iso 8859-1 code
 	  	$code	 = str_replace("?", "|", $this->utf8ToIso88591($object->getValue()));
 	  	$type     = 'datamatrix';
 
-	  	$im     = imagecreatetruecolor(214, 214);
+	  	$im     = imagecreatetruecolor(2140, 2140);
 	  	$black  = ImageColorAllocate($im,0x00,0x00,0x00);
 	  	$white  = ImageColorAllocate($im,0xff,0xff,0xff);
-	  	imagefilledrectangle($im, 0, 0, 214, 214, $white);
+	  	imagefilledrectangle($im, 0, 0, 2140, 2140, $white);
 	
 	  	$data = $matrixItem::gd($im, $black, $x, $y, 0, $type, array('code'=>$code));
 
