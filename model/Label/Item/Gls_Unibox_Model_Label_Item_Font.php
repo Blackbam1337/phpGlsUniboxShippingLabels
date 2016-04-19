@@ -25,20 +25,24 @@ class Gls_Unibox_Model_Label_Item_Font
 	public $size;		//(Integer) Fontsize
 	public $face;		//(String) inverse, bold
 	public $rotation; 	//rotation im Uhrzeigersinn (integer)
+	public $backgroundBottom; // how much more should the background extend at the bottom (only used when type is invert)
 
 	public function __construct() {
 		$this->name = "Swiss721_Cn_BT";
 		$this->size = null;
 		$this->face = null;
 		$this->rotation = null;
+		$this->backgroundBottom = 0;
 	}
 	public function setName($val) { $this->name = $val; return $this; }
 	public function setSize($val) { $this->size = $val; return $this; }
 	public function setFace($val) { $this->face = $val; return $this; }
 	public function setRotation($val) { $this->rotation = $val; return $this; }
+	public function setBackgroundBottom($val) { $this->backgroundBottom = $val; return $this; }
 
 	public function getName() { return $this->name; }
 	public function getSize() { return $this->size; }
 	public function getFace() { return $this->face; }
 	public function getRotation() { return $this->rotation; }
+	public function getBackgroundBottom() { return $this->backgroundBottom; }
 }

@@ -185,11 +185,17 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwarze farbe setzen fuer Hintergrund
 			$width = $this->widthForStringUsingFontSize($object->getValue(), $font, $fontItem->getSize());
 			$height = $fontItem->getSize();
-			$this->page->drawRectangle($this->coordX($this->mmToPts($object->getPosx())), $this->coordY($this->mmToPts($object->getPosy())) + $height/2, $this->coordX($this->mmToPts($object->getPosx())) + $width, $this->coordY($this->mmToPts($object->getPosy())) - $height/2, Zend_Pdf_Page::SHAPE_DRAW_FILL);
+			$backgroundBottom = $fontItem->getBackgroundBottom();
+			$this->page->drawRectangle(
+				$this->coordX($this->mmToPts($object->getPosx())),
+				$this->coordY($this->mmToPts($object->getPosy())) + $height/2,
+				$this->coordX($this->mmToPts($object->getPosx())) + $width,
+				$this->coordY($this->mmToPts($object->getPosy() + $backgroundBottom)) - $height/2,
+				Zend_Pdf_Page::SHAPE_DRAW_FILL);
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(1,1,1)); //weiße farbe setzen fuer Text
-			} else {
+		} else {
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwarze farbe setzen fuer text
-			}		
+		}		
 		
 		$this->page->setFont($font, $fontItem->getSize() );
 		
@@ -200,35 +206,35 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		if ($fontItem->getRotation() !== null) { $this->page->rotate($this->coordX($this->mmToPts($object->getPosx())), $this->coordY($this->mmToPts($object->getPosy())), -deg2rad(360-$fontItem->getRotation())); }
 	}
 
-	private function drawBarcodeCode128($object) {
-		$barcodeItem = $object->getItem();
-	    $barcode = new Zend_Barcode_Object_Code128();
-		$barcodeValue = str_replace('.','',$object->getValue()); //Punkte entfernen bei Schweizer Barcode
-		$barcode
-			->setText($barcodeValue)
-			->setDrawText(false)
-			->setBarThinWidth($barcodeItem->getBarThinWidth())
-			->setBarThickWidth($barcodeItem->getBarThickWidth())
-			->setFactor($barcodeItem->getFactor())
-			->setBarHeight($this->mmToPts($barcodeItem->getHeight()))
-			->setWithQuietZones(true);
+	private function renderToPdfImagePng($renderFunction) {
+		ob_start();
+		$renderFunction();
+		$imagestring = ob_get_contents();
+		ob_end_clean();
+		$handle = tmpfile();
+		fwrite($handle, $imagestring);
+		fseek($handle,0);
 
-		$renderer = new Zend_Barcode_Renderer_Pdf();
-		$renderer->setBarcode($barcode)->setResource($this->pdf)->setLeftOffset($this->coordX($this->mmToPts($object->getPosx())))->setTopOffset($this->mmToPts($object->getPosy()) + $this->_startpunkt['y'] );
+		$meta_data = stream_get_meta_data($handle);
+		$filename = $meta_data["uri"];
 
-		$renderer->draw();
+		$image = new Zend_Pdf_Resource_Image_Png($filename);
+		fclose($handle);
+		return $image;
 	}
 
     protected function drawBarcode($object){
 	
 		$barcodeItem = $object->getItem();
-		//Mage::Log($barcodeItem->getType());
 		if ($barcodeItem->getType() == 'Code128') {
-			return $this->drawBarcodeCode128($object);
+			$barcode = new Zend_Barcode_Object_Code128();
+			$barcodeValue = str_replace('.','',$object->getValue()); //Punkte entfernen bei Schweizer Barcode
+		} else {
+			// simply assume Code 2 5 interleaved
+			$barcode = new Zend_Barcode_Object_Code25interleaved();
+			$barcodeValue = $object->getValue();
 		}
 			
-		$barcode = new Zend_Barcode_Object_Code25interleaved();
-		$barcodeValue = $object->getValue();
 
 		$barcode
 			->setText($barcodeValue)
@@ -242,18 +248,7 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		$renderer = new Zend_Barcode_Renderer_Image();
 		$renderer->setBarcode($barcode);
 
-		// TODO merge with ob_start from matrix barcode below
-		ob_start();
-		$renderer->render();
-		$imagestring = ob_get_contents();
-		ob_end_clean();
-		$temp = tempnam(sys_get_temp_dir(),'DMX');//tmpfile();
-		$handle = fopen($temp,'w+b');
-		fwrite($handle, $imagestring);
-		fseek($handle,0);
-
-		$image = new Zend_Pdf_Resource_Image_Png($temp);
-		fclose($handle);
+		$image = $this->renderToPdfImagePng(function() use ($renderer) { $renderer->render(); });
 
 		$this->page->drawImage($image,
 			$this->coordX($this->mmToPts($object->getPosx())) ,
@@ -282,21 +277,10 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 	  	$white  = ImageColorAllocate($im,0xff,0xff,0xff);
 	  	imagefilledrectangle($im, 0, 0, 2140, 2140, $white);
 	
-	  	$data = $matrixItem::gd($im, $black, $x, $y, 0, $type, array('code'=>$code));
+	  	$matrixItem::gd($im, $black, $x, $y, 0, $type, array('code'=>$code));
 
-		ob_start();
-		imagepng($im);
-		$imagestring = ob_get_contents();
-		ob_end_clean();  
+		$image = $this->renderToPdfImagePng(function() use ($im) { imagepng($im); });
 		imagedestroy($im);
-	
-		$temp = tempnam(sys_get_temp_dir(),'DMX');//tmpfile();
-		$handle = fopen($temp,'w+b');
-		fwrite($handle, $imagestring);
-		fseek($handle,0);
-	
-		$image = new Zend_Pdf_Resource_Image_Png($temp);
-		fclose($handle);
 		//statt drawImage($image, $x1, $y1, $x2, $y2) nun drawImage($image, $x1, $y2, $x2, $y1) 
 		$this->page->drawImage($image, 
 								$this->coordX($this->mmToPts($object->getPosx())) , 
