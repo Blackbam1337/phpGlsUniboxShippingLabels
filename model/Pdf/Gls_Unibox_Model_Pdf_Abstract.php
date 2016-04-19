@@ -185,12 +185,15 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwarze farbe setzen fuer Hintergrund
 			$width = $this->widthForStringUsingFontSize($object->getValue(), $font, $fontItem->getSize());
 			$height = $fontItem->getSize();
-			$backgroundBottom = $fontItem->getBackgroundBottom();
+			$paddingTop = $fontItem->getPaddingTop();
+			$paddingRight = $fontItem->getPaddingRight();
+			$paddingBottom = $fontItem->getPaddingBottom();
+			$paddingLeft = $fontItem->getPaddingLeft();
 			$this->page->drawRectangle(
-				$this->coordX($this->mmToPts($object->getPosx())),
-				$this->coordY($this->mmToPts($object->getPosy())) + $height/2,
-				$this->coordX($this->mmToPts($object->getPosx())) + $width,
-				$this->coordY($this->mmToPts($object->getPosy() + $backgroundBottom)) - $height/2,
+				$this->coordX($this->mmToPts($object->getPosx() - $paddingLeft)),
+				$this->coordY($this->mmToPts($object->getPosy() - $paddingTop)) + $height/2,
+				$this->coordX($this->mmToPts($object->getPosx() + $paddingRight)) + $width,
+				$this->coordY($this->mmToPts($object->getPosy() + $paddingBottom)) - $height/2,
 				Zend_Pdf_Page::SHAPE_DRAW_FILL);
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(1,1,1)); //weiße farbe setzen fuer Text
 		} else {
@@ -242,7 +245,7 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 			->setBarThinWidth($barcodeItem->getBarThinWidth() * 10)
 			->setBarThickWidth($barcodeItem->getBarThickWidth() * 10)
 			->setBarHeight(100)
-			->setWithQuietZones(true);
+			->setWithQuietZones(false);
 			
 
 		$renderer = new Zend_Barcode_Renderer_Image();

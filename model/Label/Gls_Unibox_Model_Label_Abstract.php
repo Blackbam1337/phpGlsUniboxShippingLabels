@@ -58,11 +58,11 @@ abstract class Gls_Unibox_Model_Label_Abstract
 				$item = new Varien_Object(); $item->setTag('static')->setValue('D: Mit der Annahme akzeptieren sie allfg. Zoll- u. MwSt-Kosten via Rechnung zu bezahlen.')->setPosx(2)->setPosy(120)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(5) ); $this->data->addItem($item); $item = null;	
 				$item = new Varien_Object(); $item->setTag('static')->setValue('F: En acceptant ce paquet vous vous engagez à régler la TVA et les frais de douane.')->setPosx(2)->setPosy(122)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(5) ); $this->data->addItem($item); $item = null;	
 				$item = new Varien_Object(); $item->setTag('static')->setValue('SI+NOM')->setPosx(80)->setPosy(130)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(-90) ); $this->data->addItem($item); $item = null;	
-				$item = new Varien_Object(); $item->setTag('690')->setValue(null)->setPosx(8)->setPosy(66)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(20)->setWidth(70)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
+				$item = new Varien_Object(); $item->setTag('690')->setValue(null)->setPosx(10)->setPosy(66)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(20)->setWidth(62)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
 				$item = new Varien_Object(); $item->setTag('692')->setValue(null)->setPosx(21)->setPosy(87.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(12)->setFace('bold') ); $this->data->addItem($item); $item = null;
 
-				$item = new Varien_Object(); $item->setTag('static')->setValue('0509')->setPosx(9)->setPosy(124)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(10)->setWidth(30)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
-				$item = new Varien_Object(); $item->setTag('static')->setValue('1307')->setPosx(48)->setPosy(124)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(10)->setWidth(30)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
+				$item = new Varien_Object(); $item->setTag('static')->setValue('0509')->setPosx(9)->setPosy(124)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(10)->setWidth(23)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
+				$item = new Varien_Object(); $item->setTag('static')->setValue('1307')->setPosx(48)->setPosy(124)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(10)->setWidth(23)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
 			}
 			if ($countryCode == "GB") {
 					
@@ -79,7 +79,7 @@ abstract class Gls_Unibox_Model_Label_Abstract
 				}
 
 			if ($countryCode == "SE") {
-				$item = new Varien_Object(); $item->setTag('660')->setValue(null)->setPosx(7.5)->setPosy(65)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(20)->setWidth(58)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
+				$item = new Varien_Object(); $item->setTag('660')->setValue(null)->setPosx(10)->setPosy(65)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code128')->setHeight(20)->setWidth(58)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
 				$item = new Varien_Object(); $item->setTag('660')->setValue(null)->setPosx(33)->setPosy(88)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(7)->setFace('bold') ); $this->data->addItem($item); $item = null;	
 				$item = new Varien_Object(); $item->setTag('static')->setValue('Colli-ID:')->setPosx(22)->setPosy(88)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(7)->setFace('bold') ); $this->data->addItem($item); $item = null;		
 			}
@@ -131,12 +131,12 @@ abstract class Gls_Unibox_Model_Label_Abstract
 
 
 		$item = new Varien_Object(); $item->setTag('110')->setValue(null)->setPosx(2.5)->setPosy(6.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(28) ); $this->data->addItem($item); $item = null;
-		$item = new Varien_Object(); $item->setTag('310')->setValue(null)->setPosx(24.5)->setPosy(6.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(28)->setFace('invert')->setBackgroundBottom(3.2) ); $this->data->addItem($item); $item = null;
+		$item = new Varien_Object(); $item->setTag('310')->setValue(null)->setPosx(24.5)->setPosy(6.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(28)->setFace('invert')->setPaddingLeft(0.5)->setPaddingRight(0.5)->setPaddingBottom(3.4) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('100')->setValue(null)->setPosx(57)->setPosy(6.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(28) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('100')->setValue(null)->setPosx(2)->setPosy(113)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(8) ); $this->data->addItem($item); $item = null;
 
 
-		$item = new Varien_Object(); $item->setTag('101')->setValue(null)->setPosx(72)->setPosy(6.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(28)->setFace('invert')->setBackgroundBottom(3.2) ); $this->data->addItem($item); $item = null;
+		$item = new Varien_Object(); $item->setTag('101')->setValue(null)->setPosx(72)->setPosy(6.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(28)->setFace('invert')->setPaddingLeft(0.5)->setPaddingRight(0.5)->setPaddingBottom(3.4) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('320')->setValue(null)->setPosx(2.5)->setPosy(20)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(22) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('8951')->setValue(null)->setPosx(23)->setPosy(16)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('330')->setValue(null)->setPosx(22.5)->setPosy(21.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(10) ); $this->data->addItem($item); $item = null;
@@ -151,7 +151,7 @@ abstract class Gls_Unibox_Model_Label_Abstract
 
 		//bar & Qrcodes
 		$item = new Varien_Object(); $item->setTag('8902')->setValue(null)->setPosx(4.5)->setPosy(31.5)->setItem( (new Gls_Unibox_Model_Label_Item_Datamatrix ())->setBorder(true)->setDimension(20) ); $this->data->addItem($item); $item = null;
-		$item = new Varien_Object(); $item->setTag('8916')->setValue(null)->setPosx(30.5)->setPosy(32)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code25interleaved')->setHeight(18)->setWidth(40)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
+		$item = new Varien_Object(); $item->setTag('8916')->setValue(null)->setPosx(33)->setPosy(31)->setItem( (new Gls_Unibox_Model_Label_Item_Barcode())->setType('Code25interleaved')->setHeight(20)->setWidth(35)->setBarThickWidth(2)->setBarThinWidth(1)); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('8903')->setValue(null)->setPosx(75)->setPosy(31)->setItem( (new Gls_Unibox_Model_Label_Item_Datamatrix ())->setDimension(22) ); $this->data->addItem($item); $item = null; //Qrcode
 
 		$item = new Varien_Object(); $item->setTag('8916')->setValue(null)->setPosx(42)->setPosy(52.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(8) ); $this->data->addItem($item); $item = null;	//Freitext unter dem Barcode
