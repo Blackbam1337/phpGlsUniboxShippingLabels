@@ -185,11 +185,20 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwarze farbe setzen fuer Hintergrund
 			$width = $this->widthForStringUsingFontSize($object->getValue(), $font, $fontItem->getSize());
 			$height = $fontItem->getSize();
-			$this->page->drawRectangle($this->coordX($this->mmToPts($object->getPosx())), $this->coordY($this->mmToPts($object->getPosy())) + $height/2, $this->coordX($this->mmToPts($object->getPosx())) + $width, $this->coordY($this->mmToPts($object->getPosy())) - $height/2, Zend_Pdf_Page::SHAPE_DRAW_FILL);
+			$paddingTop = $fontItem->getPaddingTop();
+			$paddingRight = $fontItem->getPaddingRight();
+			$paddingBottom = $fontItem->getPaddingBottom();
+			$paddingLeft = $fontItem->getPaddingLeft();
+			$this->page->drawRectangle(
+				$this->coordX($this->mmToPts($object->getPosx() - $paddingLeft)),
+				$this->coordY($this->mmToPts($object->getPosy() - $paddingTop)) + $height/2,
+				$this->coordX($this->mmToPts($object->getPosx() + $paddingRight)) + $width,
+				$this->coordY($this->mmToPts($object->getPosy() + $paddingBottom)) - $height/2,
+				Zend_Pdf_Page::SHAPE_DRAW_FILL);
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(1,1,1)); //weiße farbe setzen fuer Text
-			} else {
+		} else {
 			$this->page->setFillColor(new Zend_Pdf_Color_Rgb(0,0,0)); //schwarze farbe setzen fuer text
-			}		
+		}		
 		
 		$this->page->setFont($font, $fontItem->getSize() );
 		
@@ -200,33 +209,58 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 		if ($fontItem->getRotation() !== null) { $this->page->rotate($this->coordX($this->mmToPts($object->getPosx())), $this->coordY($this->mmToPts($object->getPosy())), -deg2rad(360-$fontItem->getRotation())); }
 	}
 
+	private function renderToPdfImagePng($renderFunction) {
+		ob_start();
+		$renderFunction();
+		$imagestring = ob_get_contents();
+		ob_end_clean();
+		$handle = tmpfile();
+		fwrite($handle, $imagestring);
+		fseek($handle,0);
+
+		$meta_data = stream_get_meta_data($handle);
+		$filename = $meta_data["uri"];
+
+		$image = new Zend_Pdf_Resource_Image_Png($filename);
+		fclose($handle);
+		return $image;
+	}
+
     protected function drawBarcode($object){
 	
 		$barcodeItem = $object->getItem();
-		//Mage::Log($barcodeItem->getType());
-		switch ($barcodeItem->getType()){
-			case 'Code25interleaved': $barcode = new Zend_Barcode_Object_Code25interleaved(); break;
-			case 'Code128': $barcode = new Zend_Barcode_Object_Code128(); break;
-			
-			default: $barcode = new Zend_Barcode_Object_Code25interleaved(); break;
+		if ($barcodeItem->getType() == 'Code128') {
+			$barcode = new Zend_Barcode_Object_Code128();
+			$barcodeValue = str_replace('.','',$object->getValue()); //Punkte entfernen bei Schweizer Barcode
+		} else {
+			// simply assume Code 2 5 interleaved
+			$barcode = new Zend_Barcode_Object_Code25interleaved();
+			$barcodeValue = $object->getValue();
 		}
-		$barcodeValue = $object->getValue();
-		if ($barcodeItem->getType() == "Code128") {$barcodeValue = str_replace('.','',$object->getValue());} //Punkte entfernen bei Schweizer Barcode
+			
 
 		$barcode
 			->setText($barcodeValue)
 			->setDrawText(false)
-			->setBarThinWidth($barcodeItem->getBarThinWidth())
-			->setBarThickWidth($barcodeItem->getBarThickWidth())
-			->setFactor($barcodeItem->getFactor())
-			->setBarHeight($this->mmToPts($barcodeItem->getHeight()))
-			->setWithQuietZones(true);
+			->setBarThinWidth($barcodeItem->getBarThinWidth() * 10)
+			->setBarThickWidth($barcodeItem->getBarThickWidth() * 10)
+			->setBarHeight(100)
+			->setWithQuietZones(false);
 			
 
-		$renderer = new Zend_Barcode_Renderer_Pdf();
-		$renderer->setBarcode($barcode)->setResource($this->pdf)->setLeftOffset($this->coordX($this->mmToPts($object->getPosx())))->setTopOffset($this->mmToPts($object->getPosy()) + $this->_startpunkt['y'] );	
-			
-		$renderer->draw();
+		$renderer = new Zend_Barcode_Renderer_Image();
+		$renderer->setBarcode($barcode);
+
+		$image = $this->renderToPdfImagePng(function() use ($renderer) { $renderer->render(); });
+
+		$this->page->drawImage($image,
+			$this->coordX($this->mmToPts($object->getPosx())) ,
+			$this->coordY($this->mmToPts($object->getPosy() + $barcodeItem->getHeight())),
+			$this->coordX($this->mmToPts($object->getPosx() + $barcodeItem->getWidth())),
+			$this->coordY($this->mmToPts($object->getPosy()))
+
+		);
+		
 	}
 
 
@@ -234,35 +268,22 @@ abstract class Gls_Unibox_Model_Pdf_Abstract extends Mage_Core_Model_Abstract
 
 		$matrixItem = $object->getItem();
 
-	  	$x        = 214/2;  // barcode center
-	  	$y        = 214/2;  // barcode center
-	  	$height   = 40;   // barcode height in 1D ; module size in 2D
-	  	$width    = 40;    // barcode height in 1D ; not use in 2D
+	  	$x        = 2140/2;  // barcode center
+	  	$y        = 2140/2;  // barcode center
 
 		// datamatrix creator expects iso 8859-1 code
 	  	$code	 = str_replace("?", "|", $this->utf8ToIso88591($object->getValue()));
 	  	$type     = 'datamatrix';
 
-	  	$im     = imagecreatetruecolor(214, 214);
+	  	$im     = imagecreatetruecolor(2140, 2140);
 	  	$black  = ImageColorAllocate($im,0x00,0x00,0x00);
 	  	$white  = ImageColorAllocate($im,0xff,0xff,0xff);
-	  	imagefilledrectangle($im, 0, 0, 214, 214, $white);
+	  	imagefilledrectangle($im, 0, 0, 2140, 2140, $white);
 	
-	  	$data = $matrixItem::gd($im, $black, $x, $y, 0, $type, array('code'=>$code));
+	  	$matrixItem::gd($im, $black, $x, $y, 0, $type, array('code'=>$code));
 
-		ob_start();
-		imagepng($im);
-		$imagestring = ob_get_contents();
-		ob_end_clean();  
+		$image = $this->renderToPdfImagePng(function() use ($im) { imagepng($im); });
 		imagedestroy($im);
-	
-		$temp = tempnam(sys_get_temp_dir(),'DMX');//tmpfile();
-		$handle = fopen($temp,'w+b');
-		fwrite($handle, $imagestring);
-		fseek($handle,0);
-	
-		$image = new Zend_Pdf_Resource_Image_Png($temp);
-		fclose($handle);
 		//statt drawImage($image, $x1, $y1, $x2, $y2) nun drawImage($image, $x1, $y2, $x2, $y1) 
 		$this->page->drawImage($image, 
 								$this->coordX($this->mmToPts($object->getPosx())) , 

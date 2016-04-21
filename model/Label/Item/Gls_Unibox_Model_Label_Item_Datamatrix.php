@@ -106,11 +106,11 @@ class Gls_Unibox_Model_Label_Item_Datamatrix
       if ($digit == '') return false;
       
       if ( $b2d ){
-        $width = is_null($width) ? 5 : $width;
+        $width = is_null($width) ? 50 : $width;
         $height = $width;
       } else {
-        $width = is_null($width) ? 1 : $width;
-        $height = is_null($height) ? 50 : $height;
+        $width = is_null($width) ? 10 : $width;
+        $height = is_null($height) ? 500 : $height;
         $digit = self::bitStringTo2DArray($digit);
       }
       
