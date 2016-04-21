@@ -201,9 +201,9 @@ abstract class Gls_Unibox_Model_Label_Abstract
 
 
 		$item = new Varien_Object(); $item->setTag('800')->setValue(null)->setPosx(97.5)->setPosy(63.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
-		$item = new Varien_Object(); $item->setTag('8965')->setValue(null)->setPosx(97.5)->setPosy(85)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
+		$item = new Varien_Object(); $item->setTag('8957')->setValue(null)->setPosx(97.5)->setPosy(85)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('8915')->setValue(null)->setPosx(97.5)->setPosy(96)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
-		$item = new Varien_Object(); $item->setTag('8956')->setValue(null)->setPosx(97.5)->setPosy(110)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
+		$item = new Varien_Object(); $item->setTag('8965')->setValue(null)->setPosx(97.5)->setPosy(110)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('8914')->setValue(null)->setPosx(97.5)->setPosy(120)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('810')->setValue(null)->setPosx(95)->setPosy(63.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
 		$item = new Varien_Object(); $item->setTag('811')->setValue(null)->setPosx(92.5)->setPosy(63.5)->setItem( (new Gls_Unibox_Model_Label_Item_Font())->setSize(6)->setRotation(90) ); $this->data->addItem($item); $item = null;
